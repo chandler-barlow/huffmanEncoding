@@ -5,7 +5,7 @@ import Data.List (nub, sort, sortBy)
 import qualified Tree as T
 
 -- this just makes an association list of frequencies
-makeFreqTable :: Eq a => [a] -> [(a, Int)]
+makeFreqTable :: (Eq a) => [a] -> [(a, Int)]
 makeFreqTable xs = sortFreqTable $ zip uniqXs countUniq
   where
     uniqXs = nub xs
@@ -13,7 +13,7 @@ makeFreqTable xs = sortFreqTable $ zip uniqXs countUniq
     count t = sum . map (\x -> if x == t then 1 else 0)
     sortFreqTable = sortBy (\(_, n1) (_, n2) -> if n1 < n2 then GT else LT)
 
-showTable :: Show a => [(a, Int)] -> String
+showTable :: (Show a) => [(a, Int)] -> String
 showTable = foldl (\acc entry -> acc ++ showEntry entry) "Frequency Table: \n"
   where
     showEntry (val, count) = concat [show val, " occurs ", show count, " times\n"]
@@ -38,7 +38,7 @@ _travToCodes p (t : ts) = thisLevel : _travToCodes thisLevel ts
 travToCodes :: [[String]] -> [[String]]
 travToCodes ts = head ts : _travToCodes (head ts) (tail ts)
 
-huffmanTable :: Eq a => [a] -> [(a, String)]
+huffmanTable :: (Eq a) => [a] -> [(a, String)]
 huffmanTable l = zipWith (\row code -> (fst row, code)) ftable codes
   where
     ftable = makeFreqTable l
@@ -47,10 +47,8 @@ huffmanTable l = zipWith (\row code -> (fst row, code)) ftable codes
 
 newtype FakeHeap a = FakeHeap [a]
 
-insert :: Ord a => a -> FakeHeap a -> FakeHeap a
+insert :: (Ord a) => a -> FakeHeap a -> FakeHeap a
 insert v (FakeHeap l) = FakeHeap . sort $ v : l
 
 pop :: FakeHeap a -> (a, FakeHeap a)
 pop (FakeHeap l) = (head l, FakeHeap (tail l))
-
-main = print "hello world"

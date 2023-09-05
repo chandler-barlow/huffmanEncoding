@@ -10,7 +10,7 @@ where
 
 data Tree a = Empty | Node a (Tree a) (Tree a) deriving (Eq)
 
-instance Ord a => Ord (Tree a) where
+instance (Ord a) => Ord (Tree a) where
   (<=) Empty Empty = True
   (<=) (Node a _ _) (Node b _ _) = a <= b
   (<=) Empty _ = True
@@ -18,6 +18,10 @@ instance Ord a => Ord (Tree a) where
 
 singleton :: a -> Tree a
 singleton a = Node a Empty Empty
+
+rootVal :: Tree a -> Maybe a
+rootVal (Node a _ _) = Just a
+rootVal Empty = Nothing
 
 -- drops head and divides level order representation
 -- into two level order representation trees
